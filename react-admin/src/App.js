@@ -10,11 +10,11 @@ import ProductList from './pages/ProductList';
 import Product from './pages/Product';
 import NewProduct from './pages/NewProduct';
 import Login from './pages/Login';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 function App() {
-  const admin = JSON.parse(
-    JSON.parse(localStorage.getItem('persist:root')).user
-  ).currentUser.isAdmin;
+  const admin = useSelector((state) => state.user.currentUser?.isAdmin);
 
   return (
     <Router>
@@ -51,6 +51,7 @@ function App() {
             </div>
           </>
         )}
+        {!admin && <Redirect to="/login" />}
       </Switch>
     </Router>
   );

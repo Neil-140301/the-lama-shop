@@ -13,7 +13,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const [showPopup, setShowPopup] = useState(false);
 
-  const handleLogout = useCallback(() => dispatch(logout()), []);
+  const handleLogout = useCallback(() => dispatch(logout()), [dispatch]);
 
   return (
     <div className="h-[50px] sm:h-[60px] ">
@@ -57,7 +57,9 @@ const Navbar = () => {
                 className="relative cursor-pointer ml-[10px] border  space-x-3 rounded p-2 flex justify-between items-center "
               >
                 <UserGroupIcon className="w-6 h-6 " />
-                <div className="text-[12px] sm:text-[14px] tracking-wide ">{user?.username.toUpperCase()}</div>
+                <div className="text-[12px] sm:text-[14px] tracking-wide ">
+                  {user?.username.toUpperCase()}
+                </div>
                 <div
                   onClick={handleLogout}
                   className={`bg-white shadow-lg absolute bottom-[-70px] ${
