@@ -5,9 +5,11 @@ import WidgetSm from '../../components/WidgetSm';
 import WidgetLg from '../../components/WidgetLg';
 import { useEffect, useMemo, useState } from 'react';
 import { userRequest } from '../../requestMethods';
+import Spinner from '../../components/Spinner';
 
 export default function Home() {
   const [userStats, setUserStats] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const MONTHS = useMemo(
     () => [
@@ -37,7 +39,11 @@ export default function Home() {
             { name: MONTHS[i._id - 1], 'Active User': i.total },
           ])
         );
-      } catch (error) {}
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
     };
 
     getStats();
@@ -45,17 +51,25 @@ export default function Home() {
 
   return (
     <div className="home">
-      <FeaturedInfo />
-      <Chart
-        title="User Analytics"
-        data={userStats}
-        grid
-        dataKey="Active User"
-      />
-      <div className="homeWidgets">
-        <WidgetSm />
-        <WidgetLg />
-      </div>
+      {!isLoading ? (
+        <>
+          <FeaturedInfo />
+          <Chart
+            title="User Analytics"
+            data={userStats}
+            grid
+            dataKey="Active User"
+          />
+          <div className="homeWidgets">
+            <WidgetSm />
+            <WidgetLg />
+          </div>
+        </>
+      ) : (
+        <div className="flex h-screen justify-center items-center">
+          <Spinner />
+        </div>
+      )}
     </div>
   );
 }

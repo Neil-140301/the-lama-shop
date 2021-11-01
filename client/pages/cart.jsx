@@ -56,7 +56,7 @@ const Cart = () => {
         });
         console.log(res);
         dispatch(emptyCart());
-        router.push(
+        router.replace(
           {
             pathname: '/success',
             query: { paymentData: JSON.stringify(res.data) },

@@ -30,8 +30,9 @@ const Login = () => {
         background:
           'linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("https://images.pexels.com/photos/6984650/pexels-photo-6984650.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940") center',
       }}
-      className="flex justify-center items-center h-screen "
+      className="flex justify-center items-center flex-col h-screen "
     >
+      <h1 className="text-4xl mb-16 tracking-wider underline ">The Lama Shop</h1>
       <div
         style={{ minHeight: '250px', width: '300px' }}
         className="bg-white p-5 border rounded-lg shadow flex flex-col items-center justify-center relative "

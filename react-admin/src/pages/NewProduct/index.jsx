@@ -8,14 +8,18 @@ import {
 } from 'firebase/storage';
 import app from '../../firebase';
 import { createProduct } from '../../redux/api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Publish } from '@material-ui/icons';
 
 export default function NewProduct() {
   const [data, setData] = useState({});
   const [file, setFile] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [size, setSize] = useState([]);
+  const [color, setColor] = useState([]);
+  const [success, setSuccess] = useState(false);
   const dispatch = useDispatch();
+  const { isFetching, error } = useSelector((state) => state.product);
 
   const handleChange = useCallback((e) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -23,6 +27,14 @@ export default function NewProduct() {
 
   const handleCategories = useCallback((e) => {
     setCategories(e.target.value.split(','));
+  }, []);
+
+  const handleSize = useCallback((e) => {
+    setSize(e.target.value.split(','));
+  }, []);
+
+  const handleColor = useCallback((e) => {
+    setColor(e.target.value.split(','));
   }, []);
 
   const handleSubmit = useCallback(
@@ -58,20 +70,26 @@ export default function NewProduct() {
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            const product = { ...data, img: downloadURL, category: categories };
-
+            const product = {
+              ...data,
+              img: downloadURL,
+              category: categories,
+              size,
+              color,
+            };
             createProduct(dispatch, product);
+            setSuccess(true);
           });
         }
       );
     },
-    [file, data, categories, dispatch]
+    [file, data, categories, dispatch, size, color]
   );
 
   return (
-    <div className="newProduct p-6 overflow-hidden relative ">
+    <div className="newProduct p-8 overflow-hidden relative ">
       <h1 className="p-2 pl-0 text-bold text-2xl ">Add a New Product</h1>
-      <form className="addProductForm">
+      <form className="addProductForm ">
         <div className="addProductItem uploadImg items-center ">
           <label>Image</label>
           <label className="cursor-pointer " htmlFor="file">
@@ -124,6 +142,24 @@ export default function NewProduct() {
           />
         </div>
         <div className="addProductItem">
+          <label>Size</label>
+          <input
+            className="border-b outline-none "
+            onChange={handleSize}
+            type="text"
+            placeholder="xs,s,m"
+          />
+        </div>
+        <div className="addProductItem">
+          <label>Color</label>
+          <input
+            className="border-b outline-none "
+            onChange={handleColor}
+            type="text"
+            placeholder="red,black"
+          />
+        </div>
+        <div className="addProductItem">
           <label>Stock</label>
           <select
             className="outline-none"
@@ -134,10 +170,18 @@ export default function NewProduct() {
             <option value="No">No</option>
           </select>
         </div>
-        <button onClick={handleSubmit} className="addProductButton">
+        <button
+          disabled={isFetching}
+          onClick={handleSubmit}
+          className="addProductButton"
+        >
           Create
         </button>
       </form>
+      {error && <span className="text-red-500 ">Something Went Wrong...</span>}
+      {success && (
+        <span className="text-green-500 mt-4 ">Created successfully...</span>
+      )}
       <div className="clip"></div>
     </div>
   );
