@@ -17,6 +17,11 @@ It also has an [Admin](https://lama-shop-admin.vercel.app/) Panel to edit and ad
 
 ### Credentials for testing
 - Stripe checkout
+
+
+ ![image](https://user-images.githubusercontent.com/74774395/140616482-aab7617a-f7cd-4cc1-b505-f61289d833c6.png)
+
+
 - Admin account 
   - username: lama_admin
   - password: 123
