@@ -67,19 +67,19 @@ const ProductList = () => {
             <option disabled value="" className="">
               Size
             </option>
-            <option value="" className="">
+            <option value="xs" className="">
               XS
             </option>
-            <option value="" className="">
+            <option value="s" className="">
               S
             </option>
-            <option value="" className="">
+            <option value="m" className="">
               M
             </option>
-            <option value="" className="">
+            <option value="l" className="">
               L
             </option>
-            <option value="" className="">
+            <option value="xl" className="">
               XL
             </option>
           </select>
